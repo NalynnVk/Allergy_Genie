@@ -2,12 +2,21 @@ import 'package:allergygenieapi/bloc/tracking_bloc.dart';
 import 'package:allergygenieapi/bloc/user_bloc.dart';
 import 'package:allergygenieapi/constant.dart';
 import 'package:allergygenieapi/helpers/http_response.dart';
+import 'package:allergygenieapi/log_in.dart';
 import 'package:allergygenieapi/models/tracking/list_tracking_response_model.dart';
 import 'package:allergygenieapi/models/tracking/tracking_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/pages/allergic_event.dart';
+import 'package:allergygenieapi/pages/care_plan_page.dart';
+import 'package:allergygenieapi/pages/emergency_contact_page.dart';
+import 'package:allergygenieapi/pages/insight_page.dart';
+import 'package:allergygenieapi/pages/med_reminder_page.dart';
+import 'package:allergygenieapi/pages/profile_page.dart';
+import 'package:allergygenieapi/pages/report_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
 import 'package:allergygenieapi/public_components/theme_spinner.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -23,21 +32,52 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // CALENDAR START
-  DateTime today = DateTime.now();
-  // DateTime? _selectedDay;
-  // DateTime _focusedDay = DateTime.now();
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(
-      () {
-        today = day;
-      },
-    );
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  // DateTime today = DateTime.now();
+  DateTime? _selectedDay;
+  // store the events created
+  Map<DateTime, List<Event>> events = {};
+  // TextEditingController _eventController = TextEditingController();
+
+  // TextEditingController _severityController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
+  // String? _selectedSymptomCategory; // Added for symptom category
+  // String? _selectedFoodMedication;
+
+  late final ValueNotifier<List<Event>> _selectedEvents;
+  // int _currentTabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
+    _trackingPagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
   }
 
-  // CALENDAR END
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
-  int _currentIndex = 0;
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, _selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _selectedEvents.value = _getEventsForDay(selectedDay);
+      });
+    }
+  }
+
+  List<Event> _getEventsForDay(DateTime? day) {
+    return events[day ?? DateTime(2000)] ?? [];
+  }
+
   TrackingBloc trackingBloc = TrackingBloc();
   late Future<User?> _user;
   UserBloc userBloc = UserBloc();
@@ -92,21 +132,253 @@ class _HomePageState extends State<HomePage> {
     _onRefresh();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _trackingPagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _trackingPagingController.addPageRequestListener((pageKey) {
+  //     _fetchPage(pageKey);
+  //   });
+  // }
 
   int delayAnimationDuration = 100;
+  int _currentIndex = 0;
+
+  // final List<Widget> _pages = [
+  //   HomePageContent(), // Placeholder for your home page content
+  //   MedReminderPage(),
+  //   ReportPage(),
+  //   InsightPage(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My App'),
+        // titleSpacing: 35.0,
+        title: const Padding(
+          padding:
+              EdgeInsets.symmetric(), // Adjust the horizontal padding as needed
+          child: Text('Allergy Genie'),
+        ),
+        backgroundColor: Colors.blue,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: SizedBox(
+              child: IconButton(
+                icon: const Icon(
+                  Icons.account_circle,
+                  size: 30,
+                ), // Set the size of the icon
+                onPressed: () {
+                  // Navigate to admin profile settings page
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ));
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  // Navigate to ProfilePage when the username is tapped
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ));
+                },
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Display User Profile Picture
+                    // CircleAvatar(
+                    //   backgroundImage:
+                    //       NetworkImage(widget.user.profilePicture ?? ''),
+                    //   radius: 30,
+                    // ),
+                    SizedBox(height: 10),
+                    // Display User Name
+                    Text(
+                      'Davikah Sharma',
+                      // widget.user.username,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 15.0),
+                  ],
+                ),
+              ),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.perm_contact_cal_rounded),
+              title: const Text(
+                'Contacts',
+                style: TextStyle(color: Colors.black, fontSize: 20.0),
+              ),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.settings),
+              title: const Text(
+                'Settings',
+                style: TextStyle(color: Colors.black, fontSize: 20.0),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  //pushReplacement - buang given existing back button
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const LoginPage();
+                    },
+                  ),
+                );
+              },
+              leading: const Icon(Icons.logout),
+              title: const Text(
+                'Log out',
+                style: TextStyle(color: Colors.black, fontSize: 20.0),
+              ),
+            ),
+            const SizedBox(height: 325.0),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(
+                horizontal: 27.0,
+                vertical: 6.0,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const CarePlanPage();
+                      },
+                    ),
+                  );
+                },
+                leading: const Icon(Icons.share),
+                title: const Text(
+                  "Share Care Plan",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white, // Text color
+                    fontSize: 18, // Text size
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(
+                horizontal: 27.0,
+                vertical: 6.0,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.pink,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const EmergencyContactPage();
+                      },
+                    ),
+                  );
+                },
+                leading: const Icon(Iconsax.alarm5),
+                title: const Text(
+                  "Emergency Contact",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white, // Text color
+                    fontSize: 18, // Text size
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                scrollable: true,
+                title: Text("Event Name"),
+                content: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: TextField(
+                    controller: _descriptionController,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // store the event name into the map
+                      events.addAll({
+                        _selectedDay!: [
+                          Event(_descriptionController.text)
+                        ] //allergic_event.dart
+                      });
+                      Navigator.of(context).pop();
+                      _selectedEvents.value = _getEventsForDay(_selectedDay!);
+                    },
+                    child: Text('Save'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add),
       ),
       body: SmartRefresher(
         controller: _refreshController,
@@ -151,6 +423,46 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             _currentIndex = index;
           });
+
+          // Navigation logic based on index
+          switch (index) {
+            case 0:
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return HomePage(user: widget.user);
+                  },
+                ),
+              );
+              break;
+            case 1:
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return MedReminderPage(user: widget.user);
+                  },
+                ),
+              );
+              break;
+            case 2:
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return ReportPage(user: widget.user);
+                  },
+                ),
+              );
+              break;
+            case 3:
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return InsightPage(user: widget.user);
+                  },
+                ),
+              );
+              break;
+          }
         },
         type: BottomNavigationBarType.fixed,
         items: const [
@@ -172,18 +484,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // Display the dialog when the FAB is pressed
-      //     showDialog(
-      //       context: context,
-      //       builder: (BuildContext context) {
-      //         return AddTrackingDialog();
-      //       },
-      //     );
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
     );
   }
 
@@ -193,49 +493,70 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          Container(
-            child: TableCalendar(
-              headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
-                titleTextStyle: TextStyle(fontSize: 24),
-              ),
-              // selectedDayPredicate: (day) => isSameDay(day, today),
-              // focusedDay: today,
-              firstDay: DateTime.utc(2000, 01, 01),
-              lastDay: DateTime.utc(2060, 01, 01),
-              focusedDay: _focusedDay,
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              calendarFormat: _calendarFormat,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              onDaySelected: _onDaySelected,
-              calendarStyle: const CalendarStyle(
-                todayDecoration: BoxDecoration(
-                  color: Colors.blue, // blue
-                  shape: BoxShape.circle,
-                ),
-                selectedDecoration: BoxDecoration(
-                  color: Colors.blue, // blue
-                  shape: BoxShape.circle,
-                ),
-                markersMaxCount: 1,
-              ),
-              onFormatChanged: (format) {
-                if (_calendarFormat != format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                }
-              },
-              onPageChanged: (focusedDay) {
-                setState(() {
-                  _focusedDay = focusedDay;
-                });
-              },
+          TableCalendar(
+            headerStyle: const HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true,
+              titleTextStyle: TextStyle(fontSize: 24),
             ),
+            firstDay: DateTime.utc(2000, 01, 01),
+            lastDay: DateTime.utc(2060, 01, 01),
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            calendarFormat: _calendarFormat,
+            onDaySelected: _onDaySelected,
+            eventLoader: _getEventsForDay,
+            calendarStyle: const CalendarStyle(
+              todayDecoration: BoxDecoration(
+                color: Colors.blue, // blue
+                shape: BoxShape.circle,
+              ),
+              selectedDecoration: BoxDecoration(
+                color: Colors.blue, // blue
+                shape: BoxShape.circle,
+              ),
+              markersMaxCount: 1,
+            ),
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              setState(
+                () {
+                  _focusedDay = focusedDay;
+                },
+              );
+            },
           ),
+          const SizedBox(height: 8.0),
+          // Expanded(
+          //   child: ValueListenableBuilder<List<Event>>(
+          //     valueListenable: _selectedEvents,
+          //     builder: (context, value, _) {
+          //       return ListView.builder(
+          //         itemCount: value.length,
+          //         itemBuilder: (context, index) {
+          //           return Container(
+          //             margin:
+          //                 const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          //             decoration: BoxDecoration(
+          //               border: Border.all(),
+          //               borderRadius: BorderRadius.circular(12),
+          //             ),
+          //             child: ListTile(
+          //               onTap: () => print(""),
+          //               title: Text('${value[index]}'),
+          //             ),
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
@@ -316,8 +637,6 @@ class _HomePageState extends State<HomePage> {
       );
 }
 
-// ADD TRACKING START
-
 // class AddTrackingDialog extends StatefulWidget {
 //   @override
 //   State<StatefulWidget> createState() {
@@ -388,8 +707,6 @@ class _HomePageState extends State<HomePage> {
 //     );
 //   }
 // }
-
-// ADD TRACKING END
 
 //   Widget buildBody(
 //     required BuildContext context,
@@ -474,3 +791,4 @@ class _HomePageState extends State<HomePage> {
 //     );
 //   }
 // }
+

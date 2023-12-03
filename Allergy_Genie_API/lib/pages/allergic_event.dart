@@ -1,19 +1,24 @@
+class Event {
+  final String description;
+
+  Event(this.description);
+}
+// import 'package:allergygenieapi/pages/number_stepper.dart';
 // import 'package:flutter/material.dart';
-// import 'package:allergygenieapi/pages/number_stepper.dart'; // Import the custom number stepper widget
 
 // class Event {
-//   final String foodOrMedication;
-//   final String symptomCategory;
-//   final String notes;
-//   final int severity;
-//   final DateTime timestamp;
+//   // final String foodOrMedication;
+//   // final String symptomCategory;
+//   final String description;
+//   // final int severity;
+//   // final DateTime timestamp;
 
 //   Event({
-//     required this.foodOrMedication,
-//     required this.symptomCategory,
-//     required this.notes,
-//     required this.severity,
-//     required this.timestamp,
+//     // required this.foodOrMedication,
+//     // required this.symptomCategory,
+//     required this.description,
+//     // required this.severity,
+//     // required this.timestamp,
 //   });
 // }
 
@@ -43,12 +48,13 @@
 //     //     TextEditingController(text: widget.event.symptomCategory);
 //     // _severityController =
 //     //     TextEditingController(text: widget.event.severity.toString());
-//     _selectedSymptomCategory = widget.event.symptomCategory;
-//     _selectedFoodMedication = widget.event.foodOrMedication;
-//     _descriptionController = TextEditingController(text: widget.event.notes);
+//     // _selectedSymptomCategory = widget.event.symptomCategory;
+//     // _selectedFoodMedication = widget.event.foodOrMedication;
+//     _descriptionController =
+//         TextEditingController(text: widget.event.description);
 
 //     // Initialize severity with the value from the event
-//     _severity = widget.event.severity;
+//     // _severity = widget.event.severity;
 //   }
 
 //   @override
@@ -61,11 +67,11 @@
 
 //   void _updateEvent() {
 //     final updatedEvent = Event(
-//       symptomCategory: _selectedSymptomCategory ?? '',
-//       foodOrMedication: _selectedFoodMedication ?? '',
-//       severity: _severity,
-//       notes: _descriptionController.text,
-//       timestamp: widget.event.timestamp,
+//       // symptomCategory: _selectedSymptomCategory ?? '',
+//       // foodOrMedication: _selectedFoodMedication ?? '',
+//       // severity: _severity,
+//       description: _descriptionController.text,
+//       // timestamp: widget.event.timestamp,
 //     );
 
 //     Navigator.of(context).pop(updatedEvent); // Return the updated event
@@ -316,7 +322,7 @@
 //               TextFormField(
 //                 controller: _descriptionController,
 //                 decoration:
-//                     const InputDecoration(labelText: 'Additional Notes'),
+//                     const InputDecoration(labelText: 'Additional description'),
 //               ),
 //               const SizedBox(height: 20),
 //               const Text(

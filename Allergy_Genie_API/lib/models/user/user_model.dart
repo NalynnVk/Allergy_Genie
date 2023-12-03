@@ -19,6 +19,7 @@ class User {
     this.access_token,
   });
 
+  //TODO TUKAQ
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       // id: json['id'] as int,

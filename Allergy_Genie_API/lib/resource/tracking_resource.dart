@@ -29,7 +29,7 @@ class TrackingResource {
   }
 
   // update tracking
-  static Resource updateracking(int trackingId) {
+  static Resource updatetracking(int trackingId) {
     return Resource(
         url: 'tracking/$trackingId/update',
         parse: (response) {
