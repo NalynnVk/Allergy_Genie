@@ -19,18 +19,14 @@ class User {
     this.access_token,
   });
 
-  //TODO TUKAQ
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      // id: json['id'] as int,
-      name: json['name'] as String,
-      date_of_birth: json['date_of_birth'] as String,
-      phone_number: json['phone_number'] as String,
-      profile_photo_path: json['profile_photo_path'] as String,
-      registration_status: json['registration_status'] as String,
-      // registration_status_id: json['registration_status_id'] as int,
-      access_token: json['access_token'] as String,
-    );
+  User.fromJson(Map<String, dynamic> json) {
+    // id = json['id'];
+    name = json['name'];
+    date_of_birth = json['date_of_birth'];
+    phone_number = json['phone_number'];
+    profile_photo_path = json['profile_photo_path'];
+    registration_status = json['registration_status'];
+    access_token = json['access_token'];
   }
 
   Map<String, dynamic> toJson() {
