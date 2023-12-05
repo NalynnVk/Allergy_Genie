@@ -5,7 +5,8 @@ import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/models/insight/insight_model.dart';
 import 'package:allergygenieapi/models/insight/list_insight_response_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
-import 'package:allergygenieapi/pages/base_page.dart';
+import 'package:allergygenieapi/pages/insight_description_page.dart';
+import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
 import 'package:allergygenieapi/public_components/theme_spinner.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +118,7 @@ class _InsightPageState extends State<InsightPage> {
                 itemBuilder: (context, insight, index) {
                   return insightList(
                     context: context,
+                    user: widget.user,
                     insight: insight,
                   );
                 },
@@ -128,60 +130,71 @@ class _InsightPageState extends State<InsightPage> {
     );
   }
 
-  Widget insightList({required BuildContext context, required insight}) =>
-      Center(
-        child: Column(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Card Widgets
-                Card(
-                  margin: const EdgeInsets.all(15),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // const SizedBox(height: 8),
-                                  // Text('Symptom category: Skin-related Symptoms'),
-                                  // Text('Allergen type: Fish (eg: tuna)'),
-                                  // Text('Severity number: 2'),
-                                  // Text('Notes: Rashes around the arm'),
-                                  // Text(
-                                  //   'Photo Path: ${insight.photo_path}',
-                                  //   style: const TextStyle(
-                                  //     color: Colors.black,
-                                  //     fontSize: 15,
-                                  //     fontWeight: FontWeight.bold,
-                                  //   ),
-                                  // ),
-                                  Text(
-                                    '${insight.title}',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+  Widget insightList({
+    required BuildContext context,
+    required user,
+    required insight,
+  }) =>
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InsightDescriptionPage(
+                user: user,
+                insight: insight,
+              ),
             ),
-          ],
+          );
+        },
+        child: Container(
+          margin: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.amber,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+                // child: Image.asset(
+                //   // Use the appropriate image path from your insight model
+                //   '${insight.photo_path}',
+                //   width: double.infinity,
+                //   height: 150, // Set the desired height
+                //   fit: BoxFit.cover,
+                // ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${insight.title}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_ios_rounded),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

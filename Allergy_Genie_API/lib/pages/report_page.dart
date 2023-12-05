@@ -1,5 +1,5 @@
 import 'package:allergygenieapi/models/user/user_model.dart';
-import 'package:allergygenieapi/pages/base_page.dart';
+import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:flutter/material.dart';
 
 class ReportPage extends StatefulWidget {
@@ -14,5 +14,9 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold();
+    //     return BasePage(
+    //   user: widget.user,
+    //   body: null,
+    // );
   }
 }

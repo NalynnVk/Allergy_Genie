@@ -1,5 +1,5 @@
 import 'package:allergygenieapi/models/user/user_model.dart';
-import 'package:allergygenieapi/pages/base_page.dart';
+import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:flutter/material.dart';
 
 class MedReminderPage extends StatefulWidget {
