@@ -8,10 +8,6 @@ import 'package:allergygenieapi/resource/tracking_resource.dart';
 import 'package:allergygenieapi/services/web_services.dart';
 
 class InsightBloc {
-  // add tracking?
-  // Future<TrackingResponseModel> createTracking(TrackingRequestModel newTracking) async {
-  //   return await Webservice.post(TrackingResource.createTracking(), body: newTracking.toJson());
-  // }
 
   // list tracking
   Future<ListInsightResponseModel> getListInsight() async {

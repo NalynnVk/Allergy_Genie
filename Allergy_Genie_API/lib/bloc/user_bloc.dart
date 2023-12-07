@@ -24,4 +24,8 @@ class UserBloc {
     }
     return response;
   }
+
+  // Future<UserResponseModel> getProfile(int id) async {
+  //   return await Webservice.get(UserResource.getUser(id));
+  // }
 }

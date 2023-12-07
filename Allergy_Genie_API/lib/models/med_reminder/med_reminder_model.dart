@@ -1,13 +1,13 @@
 import 'package:allergygenieapi/models/medication/medication_model.dart';
 
-class MedicationReminder {
+class MedReminder {
   // int? id;
   Medication? medication;
   String? dosage;
   String? time_reminder;
   String? repititon;
 
-  MedicationReminder({
+  MedReminder({
     // this.id,
     this.medication,
     this.dosage,
@@ -15,7 +15,7 @@ class MedicationReminder {
     this.repititon,
   });
 
-  MedicationReminder.fromJson(Map<String, dynamic> json) {
+  MedReminder.fromJson(Map<String, dynamic> json) {
     // id = json['id'];
     medication = json['medication'] != null
         ? new Medication.fromJson(json['medication'])

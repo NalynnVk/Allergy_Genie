@@ -1,7 +1,7 @@
 import 'package:allergygenieapi/log_in.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:allergygenieapi/pages/care_plan_page.dart';
-import 'package:allergygenieapi/pages/emergency_contact_page.dart';
+// import 'package:allergygenieapi/pages/emergency_contact_page.dart';
 import 'package:allergygenieapi/pages/home_page.dart';
 import 'package:allergygenieapi/pages/insight_page.dart';
 import 'package:allergygenieapi/pages/med_reminder_page.dart';
@@ -9,6 +9,8 @@ import 'package:allergygenieapi/pages/profile_page.dart';
 import 'package:allergygenieapi/pages/report_page.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BasePage extends StatefulWidget {
   final User user;
@@ -27,32 +29,35 @@ class _BasePageState extends State<BasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // titleSpacing: 35.0,
-        title: const Padding(
-          padding:
-              EdgeInsets.symmetric(), // Adjust the horizontal padding as needed
-          child: Text('Allergy Genie'),
+        centerTitle: true, // Center the title
+        titleSpacing: 0.0, // Adjust the spacing around the title as needed
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Image.asset(
+            'images/AllergyGenieLogo.png',
+            height: 60,
+          ),
         ),
         backgroundColor: Colors.blue,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: SizedBox(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.account_circle,
-                  size: 30,
-                ), // Set the size of the icon
-                onPressed: () {
-                  // Navigate to admin profile settings page
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
-                  ));
-                },
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        //     child: SizedBox(
+        //       child: IconButton(
+        //         icon: const Icon(
+        //           Icons.account_circle,
+        //           size: 30,
+        //         ), // Set the size of the icon
+        //         onPressed: () {
+        //           // Navigate to admin profile settings page
+        //           Navigator.of(context).push(MaterialPageRoute(
+        //             builder: (context) => ProfilePage(),
+        //           ));
+        //         },
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: widget.body,
       drawer: Drawer(
@@ -67,7 +72,7 @@ class _BasePageState extends State<BasePage> {
                 onTap: () {
                   // Navigate to ProfilePage when the username is tapped
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
+                    builder: (context) => ProfilePage(user: widget.user),
                   ));
                 },
                 child: const Column(
@@ -129,7 +134,7 @@ class _BasePageState extends State<BasePage> {
                 style: TextStyle(color: Colors.black, fontSize: 20.0),
               ),
             ),
-            const SizedBox(height: 345.0),
+            const SizedBox(height: 335.0),
             Container(
               width: double.infinity,
               margin: const EdgeInsets.symmetric(
@@ -190,13 +195,7 @@ class _BasePageState extends State<BasePage> {
               ),
               child: ListTile(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return const EmergencyContactPage();
-                      },
-                    ),
-                  );
+                  _openDialerWithNumber();
                 },
                 leading: const Icon(Iconsax.alarm5),
                 title: const Text(
@@ -281,5 +280,31 @@ class _BasePageState extends State<BasePage> {
         ],
       ),
     );
+  }
+}
+
+// void _makeEmergencyCall() async {
+//   // Replace '0182896587' with your specific emergency number
+//   String phoneNumber = '0182896587';
+
+//   try {
+//     await FlutterPhoneDirectCaller.callNumber(phoneNumber);
+//   } catch (error) {
+//     print('Error making the call: $error');
+//     // Handle error as needed
+//   }
+// }
+
+void _openDialerWithNumber() async {
+  // Replace '0182896587' with your specific emergency number
+  String phoneNumber = '999';
+
+  String url = 'tel:$phoneNumber';
+
+  try {
+    await launch(url);
+  } catch (error) {
+    print('Error opening dialer: $error');
+    // Handle error as needed
   }
 }
