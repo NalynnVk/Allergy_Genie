@@ -75,7 +75,7 @@ class _BasePageState extends State<BasePage> {
                     builder: (context) => ProfilePage(user: widget.user),
                   ));
                 },
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -88,9 +88,9 @@ class _BasePageState extends State<BasePage> {
                     SizedBox(height: 10),
                     // Display User Name
                     Text(
-                      'Davikah Sharma',
+                      '${widget.user.name}',
                       // widget.user.username,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

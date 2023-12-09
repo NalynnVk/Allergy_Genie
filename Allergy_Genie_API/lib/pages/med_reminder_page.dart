@@ -312,7 +312,9 @@ class _MedReminderPageState extends State<MedReminderPage> {
 
   Future<void> _showEditDialog(
       BuildContext context, MedReminder medreminder) async {
-    TimeOfDay selectedTime = TimeOfDay.now(); // Initialize selectedTime here
+    TimeOfDay selectedTime = TimeOfDay.fromDateTime(
+      DateTime.parse('2023-12-09 ${medreminder.time_reminder}'),
+    );
 
     await showDialog(
       context: context,
@@ -355,26 +357,37 @@ class _MedReminderPageState extends State<MedReminderPage> {
                       ),
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      // controller: nameController,
-                      decoration: InputDecoration(
-                        labelText: 'Medication Name',
-                        // Set the initial value for editing
-                        // e.g., controller: TextEditingController(text: medreminder.medication?.name),
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextField(
+                          // Set the initial value for editing
+                          controller: TextEditingController(
+                              text: medreminder.medication?.name),
+                          decoration: const InputDecoration(
+                            labelText: 'Medication Name',
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      // controller: dosageController,
-                      decoration: InputDecoration(
-                        labelText: 'Dosage',
-                        // Set the initial value for editing
-                        // e.g., controller: TextEditingController(text: medreminder.dosage),
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextField(
+                          // Set the initial value for editing
+                          controller: TextEditingController(
+                            text: medreminder.dosage,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Medication Dosage',
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
