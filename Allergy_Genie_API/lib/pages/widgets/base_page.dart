@@ -6,7 +6,7 @@ import 'package:allergygenieapi/pages/home_page.dart';
 import 'package:allergygenieapi/pages/insight_page.dart';
 import 'package:allergygenieapi/pages/med_reminder_page.dart';
 import 'package:allergygenieapi/pages/profile_page.dart';
-import 'package:allergygenieapi/pages/report_page.dart';
+import 'package:allergygenieapi/pages/medication_page.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 // import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -243,7 +243,8 @@ class _BasePageState extends State<BasePage> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return ReportPage(user: widget.user);
+                    // return ReportPage(user: widget.user);
+                    return MedicationPage(user: widget.user);
                   },
                 ),
               );

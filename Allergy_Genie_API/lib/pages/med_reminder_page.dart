@@ -1,3 +1,5 @@
+import 'package:allergygenieapi/helpers/general_method.dart';
+import 'package:allergygenieapi/pages/medication_page.dart';
 import 'package:flutter/material.dart';
 import 'package:allergygenieapi/bloc/med_reminder_bloc.dart';
 import 'package:allergygenieapi/bloc/user_bloc.dart';
@@ -21,8 +23,9 @@ class MedReminderPage extends StatefulWidget {
 }
 
 class _MedReminderPageState extends State<MedReminderPage> {
+  //medication reminder api
   MedReminderBloc medReminderBloc = MedReminderBloc();
-  late Future<User?> _user;
+  // late Future<User?> _user;
   UserBloc userBloc = UserBloc();
   static const _pageSize = 10;
   final PagingController<int, MedReminder> _medreminderPagingController =
@@ -128,7 +131,8 @@ class _MedReminderPageState extends State<MedReminderPage> {
             bottom: 65.0, right: 10.0), // Adjust the bottom margin as needed
         child: FloatingActionButton(
           onPressed: () {
-            _showAddDialog(context);
+            // _showAddDialog(context);
+            navigateTo(context, MedicationPage(user: widget.user));
           },
           child: const Icon(Icons.add),
         ),
@@ -141,9 +145,12 @@ class _MedReminderPageState extends State<MedReminderPage> {
     required medreminder,
   }) =>
       GestureDetector(
+        // onTap: () {
+        //   // Call the edit dialog when the container is tapped
+        //   _buildEditMedicationForm(context, medreminder);
+        // },
         onTap: () {
-          // Call the edit dialog when the container is tapped
-          _showEditDialog(context, medreminder);
+          navigateTo(context, MedicationPage(user: widget.user));
         },
         child: Container(
           margin: const EdgeInsets.all(15),

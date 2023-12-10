@@ -240,19 +240,19 @@ class _AddTrackingDialogState extends State<AddTrackingDialog> {
           children: [
             TextField(
               controller: symptomCategoryController,
-              decoration: InputDecoration(labelText: 'Symptom Category'),
+              decoration: const InputDecoration(labelText: 'Symptom Category'),
             ),
             TextField(
               controller: allergenTypeController,
-              decoration: InputDecoration(labelText: 'Allergen Type'),
+              decoration: const InputDecoration(labelText: 'Allergen Type'),
             ),
             TextField(
               controller: severityController,
-              decoration: InputDecoration(labelText: 'Symptom Severity'),
+              decoration: const InputDecoration(labelText: 'Symptom Severity'),
             ),
             TextField(
               controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Description'),
             ),
           ],
         ),
