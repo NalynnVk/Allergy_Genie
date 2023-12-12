@@ -1,9 +1,12 @@
 import 'package:allergygenieapi/bloc/tracking_bloc.dart';
 import 'package:allergygenieapi/bloc/user_bloc.dart';
 import 'package:allergygenieapi/constant.dart';
+import 'package:allergygenieapi/helpers/general_method.dart';
 import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/models/tracking/list_tracking_response_model.dart';
 import 'package:allergygenieapi/models/tracking/tracking_model.dart';
+import 'package:allergygenieapi/models/tracking/tracking_request_model.dart';
+import 'package:allergygenieapi/models/tracking/tracking_response_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
@@ -14,7 +17,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeName = '/tracking'; // dian line 13
   final User user;
+
   const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -22,6 +27,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final formKey = GlobalKey<FormState>(); // dian line 21
+  TrackingRequestModel trackingRequestModel =
+      TrackingRequestModel(); // dian line 22
   DateTime today = DateTime.now();
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
@@ -68,6 +76,10 @@ class _HomePageState extends State<HomePage> {
     _onRefresh();
   }
 
+  bool _isLoading = false; // dian line 84
+  final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>(); // dian line 85
+
   @override
   void initState() {
     super.initState();
@@ -84,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         body: SmartRefresher(
           controller: _refreshController,
           header: const WaterDropMaterialHeader(
-            backgroundColor: kPrimaryColor,
+            backgroundColor: Colors.grey,
           ),
           onRefresh: _onRefresh,
           child: CustomScrollView(
@@ -119,16 +131,24 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AddTrackingDialog();
-            },
-          );
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: 65.0,
+            right: 10.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AddTrackingDialog();
+                  },
+                );
+              },
+              child: Icon(Icons.add),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -264,105 +284,49 @@ class _AddTrackingDialogState extends State<AddTrackingDialog> {
           },
           child: Text('Cancel'),
         ),
-        TextButton(
-          onPressed: () {
-            String symptomCategory = symptomCategoryController.text;
-            String allergenType = allergenTypeController.text;
-            String severity = severityController.text;
-            String description = descriptionController.text;
+        // TextButton(
+        //   onPressed: () async {
+        //     String symptomCategory = symptomCategoryController.text;
+        //     String allergenType = allergenTypeController.text;
+        //     String severity = severityController.text;
+        //     String description = descriptionController.text;
 
-            // Add your logic to save the data
-            // ...
+        //     // Add your logic to save the data
+        //     // ...
 
-            Navigator.of(context).pop();
-          },
-          child: Text('Save'),
-        ),
+        //     Navigator.of(context).pop();
+
+        //     TrackingBloc trackingBloc = TrackingBloc(); // dian line 380
+        //     TrackingResponseModel trackingResponseModel =
+        //         await trackingBloc.createTracking(TrackingRequestModel());
+
+        //     if (trackingResponseModel.isSuccess) {
+        //       if (mounted) {
+        //         navigateTo(
+        //             context,
+        //             HomePage(
+        //               tracking: trackingResponseModel.data!,
+        //             ));
+        //       }
+
+        //       print(trackingResponseModel);
+        //     } else {
+        //       print(trackingResponseModel.message);
+        //     }
+        //   },
+        //   child: Text('Save'),
+        // ),
       ],
     );
   }
 }
 
-//   Widget buildBody(
-//     required BuildContext context,
-//   required Tracking tracking,
-
-//   ) async => const Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           // Card Widgets
-//           Card(
-//             margin: EdgeInsets.all(8),
-//             child: Padding(
-//               padding: EdgeInsets.all(16),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                       tracking.name!,
-//                       style: const TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 15,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-
-//                 ],
-//               ),
-//             ),
-//           ),
-//           // TrackingTile Widget
-//           // SizedBox(height: 16),
-//           // TrackingTile(
-//           //   symptomCategory: 'Skin-related Symptoms',
-//           //   allergenType: 'Fish (e.g., tuna)',
-//           //   severityNumber: 2,
-//           //   additionalNotes: 'Rashes around the arm',
-//           // ),
-//           // SizedBox(height: 10),
-//           // TrackingTile(
-//           //   symptomCategory: 'Skin-related Symptoms',
-//           //   allergenType: 'Eggs (e.g., chicken eggs)',
-//           //   severityNumber: 5,
-//           //   additionalNotes: 'Rashes around the arm',
-//           // ),
-//         ],
-//       ),
-//     );
-// }
-
-// TrackingTile Widget
-// class TrackingTile extends StatelessWidget {
-//   final String symptomCategory;
-//   final String allergenType;
-//   final int severityNumber;
-//   final String additionalNotes;
-
-//   const TrackingTile({
-//     required this.symptomCategory,
-//     required this.allergenType,
-//     required this.severityNumber,
-//     required this.additionalNotes,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//       title: Text('Symptom Category: $symptomCategory'),
-//       subtitle: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text('Allergen Type: $allergenType'),
-//           Text('Severity Number: $severityNumber'),
-//           Text('Additional Notes: $additionalNotes'),
-//         ],
-//       ),
-//       tileColor: Colors.white,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(20),
-//       ),
-//       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//     );
-//   }
-// }
+class ThemeSpinner {
+  static Widget spinner() {
+    return const Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+      ),
+    );
+  }
+}

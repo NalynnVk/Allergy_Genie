@@ -1,13 +1,12 @@
 import 'package:allergygenieapi/helpers/base_api_response.dart';
-import 'package:allergygenieapi/models/medication/medication_model.dart';
+import 'package:allergygenieapi/models/allergen/allergen_model.dart';
 import 'package:allergygenieapi/models/paginator_model.dart';
 
-class ListMedicationResponseModel
-    extends BaseAPIResponse<List<Medication>, Null> {
-  ListMedicationResponseModel(fullJson) : super(fullJson);
+class ListAllergenResponseModel extends BaseAPIResponse<List<Allergen>, Null> {
+  ListAllergenResponseModel(fullJson) : super(fullJson);
 
   @override
-  dataToJson(List<Medication>? data) {
+  dataToJson(List<Allergen>? data) {
     if (this.data != null) {
       return this.data?.map((v) => v.toJson()).toList();
     }
@@ -20,12 +19,12 @@ class ListMedicationResponseModel
   }
 
   @override
-  List<Medication>? jsonToData(Map<String, dynamic>? json) {
+  List<Allergen>? jsonToData(Map<String, dynamic>? json) {
     if (json != null) {
       data = [];
 
       json["data"].forEach((v) {
-        data!.add(Medication.fromJson(v));
+        data!.add(Allergen.fromJson(v));
       });
 
       return data!;

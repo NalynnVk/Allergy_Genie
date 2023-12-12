@@ -1,4 +1,4 @@
-import 'package:allergygenieapi/models/tracking/tracking_model.dart';
+// import 'package:allergygenieapi/models/tracking/tracking_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +37,7 @@ class EditProfilePage extends StatelessWidget {
   final User user;
   // final Tracking tracking;
 
-  EditProfilePage({Key? key, required this.user}) : super(key: key);
+  const EditProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +99,21 @@ class EditProfilePage extends StatelessWidget {
                           Icons.phone,
                           Colors.black,
                         ),
+                        // Text(
+                        //   'Allergen Type: ${user.allergen!.name}',
+                        //   style: const TextStyle(
+                        //     color: Colors.blue,
+                        //     fontSize: 15,
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 5),
+                        // Text(
+                        //   'Severity Level: ${user.symptom!.severity}',
+                        //   style: const TextStyle(
+                        //     color: Colors.blue,
+                        //     fontSize: 15,
+                        //   ),
+                        // ),
                         // const SizedBox(height: 15.0),
                         // Text(
                         //   'Allergen Type: ${tracking.allergen!.name}',
@@ -233,116 +248,117 @@ class EditProfilePage extends StatelessWidget {
     );
   }
 
-  Future<void> _showAddDialog(BuildContext context) async {
-    TimeOfDay selectedTime = TimeOfDay.now(); // Initialize selectedTime here
+  // SALAH PAGE => med_reminder_page.dart
+  // Future<void> _showAddDialog(BuildContext context) async {
+  //   TimeOfDay selectedTime = TimeOfDay.now(); // Initialize selectedTime here
 
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          title: const Center(child: Text('Add Meds Reminder')),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      decoration: InputDecoration(labelText: 'Allergen Type'),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      // controller: dosageController,
-                      decoration: InputDecoration(labelText: 'Severity'),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Add logic to save the new medication reminder
-                // ...
+  //   await showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10.0),
+  //         ),
+  //         title: const Center(child: Text('Add Meds Reminder')),
+  //         content: StatefulBuilder(
+  //           builder: (context, setState) {
+  //             return const Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: <Widget>[
+  //                 Padding(
+  //                   padding: EdgeInsets.symmetric(horizontal: 20.0),
+  //                   child: TextField(
+  //                     decoration: InputDecoration(labelText: 'Allergen Type'),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: EdgeInsets.symmetric(horizontal: 20.0),
+  //                   child: TextField(
+  //                     // controller: dosageController,
+  //                     decoration: InputDecoration(labelText: 'Severity'),
+  //                   ),
+  //                 ),
+  //               ],
+  //             );
+  //           },
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               // Add logic to save the new medication reminder
+  //               // ...
 
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Save'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
-  Future<void> _showEditDialog(BuildContext context, User user) async {
-    TimeOfDay selectedTime = TimeOfDay.now(); // Initialize selectedTime here
+  // Future<void> _showEditDialog(BuildContext context, User user) async {
+  //   TimeOfDay selectedTime = TimeOfDay.now(); // Initialize selectedTime here
 
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          title: const Center(child: Text('Edit Allergen Info')),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Allergen Type',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Severity',
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Add logic to save the edited medication reminder
-                // ...
+  //   await showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10.0),
+  //         ),
+  //         title: const Center(child: Text('Edit Allergen Info')),
+  //         content: StatefulBuilder(
+  //           builder: (context, setState) {
+  //             return const Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: <Widget>[
+  //                 Padding(
+  //                   padding: EdgeInsets.symmetric(horizontal: 20.0),
+  //                   child: TextField(
+  //                     decoration: InputDecoration(
+  //                       labelText: 'Allergen Type',
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: EdgeInsets.symmetric(horizontal: 20.0),
+  //                   child: TextField(
+  //                     decoration: InputDecoration(
+  //                       labelText: 'Severity',
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             );
+  //           },
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               // Add logic to save the edited medication reminder
+  //               // ...
 
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Save'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

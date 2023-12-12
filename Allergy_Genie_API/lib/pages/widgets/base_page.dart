@@ -6,7 +6,8 @@ import 'package:allergygenieapi/pages/home_page.dart';
 import 'package:allergygenieapi/pages/insight_page.dart';
 import 'package:allergygenieapi/pages/med_reminder_page.dart';
 import 'package:allergygenieapi/pages/profile_page.dart';
-import 'package:allergygenieapi/pages/medication_page.dart';
+// import 'package:allergygenieapi/pages/medication_page.dart';
+// import 'package:allergygenieapi/pages/report_page.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 // import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -65,7 +66,7 @@ class _BasePageState extends State<BasePage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
               child: GestureDetector(
@@ -85,7 +86,7 @@ class _BasePageState extends State<BasePage> {
                     //       NetworkImage(widget.user.profilePicture ?? ''),
                     //   radius: 30,
                     // ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Display User Name
                     Text(
                       '${widget.user.name}',
@@ -96,19 +97,19 @@ class _BasePageState extends State<BasePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 15.0),
+                    const SizedBox(height: 15.0),
                   ],
                 ),
               ),
             ),
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.perm_contact_cal_rounded),
-              title: const Text(
-                'Contacts',
-                style: TextStyle(color: Colors.black, fontSize: 20.0),
-              ),
-            ),
+            // ListTile(
+            //   onTap: () {},
+            //   leading: const Icon(Icons.perm_contact_cal_rounded),
+            //   title: const Text(
+            //     'Contacts',
+            //     style: TextStyle(color: Colors.black, fontSize: 20.0),
+            //   ),
+            // ),
             ListTile(
               onTap: () {},
               leading: const Icon(Icons.settings),
@@ -134,7 +135,7 @@ class _BasePageState extends State<BasePage> {
                 style: TextStyle(color: Colors.black, fontSize: 20.0),
               ),
             ),
-            const SizedBox(height: 335.0),
+            const SizedBox(height: 395.0),
             Container(
               width: double.infinity,
               margin: const EdgeInsets.symmetric(
@@ -239,17 +240,17 @@ class _BasePageState extends State<BasePage> {
                 ),
               );
               break;
+            // case 2:
+            //   Navigator.of(context).pushReplacement(
+            //     MaterialPageRoute(
+            //       builder: (BuildContext context) {
+            //         // return ReportPage(user: widget.user);
+            //         return ReportPage(user: widget.user);
+            //       },
+            //     ),
+            //   );
+            //   break;
             case 2:
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    // return ReportPage(user: widget.user);
-                    return MedicationPage(user: widget.user);
-                  },
-                ),
-              );
-              break;
-            case 3:
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
@@ -270,10 +271,10 @@ class _BasePageState extends State<BasePage> {
             icon: Icon(Icons.alarm_add),
             label: 'Reminder',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.difference_outlined),
-            label: 'Report',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.difference_outlined),
+          //   label: 'Report',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.insights),
             label: 'Insight',

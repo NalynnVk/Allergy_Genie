@@ -10,7 +10,7 @@ class TrackingResource {
   // perlu request model?
 
   // add tracking
-  static Resource createtracking(TrackingRequestModel trackingRequestModel) {
+  static Resource createTracking(TrackingRequestModel trackingRequestModel) {
     return Resource(
         url: 'tracking',
         data: trackingRequestModel.toJson(),

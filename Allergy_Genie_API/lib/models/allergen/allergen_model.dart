@@ -1,20 +1,20 @@
 class Allergen {
-  // int? id;
+  int? id;
   String? name;
 
   Allergen({
-    // this.id,
+    this.id,
     this.name,
   });
 
   Allergen.fromJson(Map<String, dynamic> json) {
-    // id = json['id'];
+    id = json['id'];
     name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['id'] = this.id;
+    data['id'] = this.id;
     data['name'] = this.name;
     return data;
   }

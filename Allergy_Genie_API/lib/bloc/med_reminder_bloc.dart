@@ -1,13 +1,20 @@
 // import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/models/med_reminder/list_med_reminder_response_model.dart';
+import 'package:allergygenieapi/models/med_reminder/med_reminder_request_model.dart';
 import 'package:allergygenieapi/models/med_reminder/med_reminder_response_model.dart';
 import 'package:allergygenieapi/resource/med_reminder_resource.dart';
 import 'package:allergygenieapi/services/web_services.dart';
 
 class MedReminderBloc {
-  // add medReminder?
+  // // add medReminder?
   // Future<MedReminderResponseModel> createMedReminder(MedReminderRequestModel newMedReminder) async {
   //   return await Webservice.post(MedReminderResource.createMedReminder(), body: newMedReminder.toJson());
+  // }
+
+  // Future<MedReminderResponseModel> createMedReminder(
+  //     MedReminderRequestModel requestModel, int medreminderId) async {
+  //   return await Webservice.post(
+  //       MedReminderResource.createMedReminder(medreminderId, requestModel));
   // }
 
   // list medReminder

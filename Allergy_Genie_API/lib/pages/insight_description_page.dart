@@ -18,7 +18,7 @@ class _InsightDescriptionPageState extends State<InsightDescriptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
             "Insight"), //tekan title1 at homepage, tittle1 display in description page
       ),
       body: SingleChildScrollView(
@@ -28,12 +28,12 @@ class _InsightDescriptionPageState extends State<InsightDescriptionPage> {
           padding: const EdgeInsets.all(25.0),
           child: Column(
             children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.insight.photo_path ?? 'No Photo',
-              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Text(
+              //   widget.insight.photo_path ?? 'No Photo',
+              // ),
               const SizedBox(
                 height: 20,
               ),

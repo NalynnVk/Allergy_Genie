@@ -1,13 +1,19 @@
+import 'package:allergygenieapi/bloc/med_reminder_bloc.dart';
 import 'package:allergygenieapi/bloc/medication_bloc.dart';
+import 'package:allergygenieapi/helpers/general_method.dart';
 import 'package:allergygenieapi/helpers/http_response.dart';
+import 'package:allergygenieapi/models/med_reminder/med_reminder_request_model.dart';
+import 'package:allergygenieapi/models/med_reminder/med_reminder_response_model.dart';
 import 'package:allergygenieapi/models/medication/list_medication_response_model.dart';
 import 'package:allergygenieapi/models/medication/medication_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/pages/med_reminder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MedicationPage extends StatefulWidget {
+  static const routeName = '/medicationreminder'; // dian line 13
   final User user;
 
   const MedicationPage({Key? key, required this.user}) : super(key: key);
@@ -17,6 +23,10 @@ class MedicationPage extends StatefulWidget {
 }
 
 class _MedicationPageState extends State<MedicationPage> {
+  final formKey = GlobalKey<FormState>(); // dian line 21
+  MedReminderRequestModel medreminderRequestModel =
+      MedReminderRequestModel(); // dian line 22
+
   MedicationBloc medicationBloc = MedicationBloc();
   static const _pageSize = 10;
   final PagingController<int, Medication> _medicationPagingController =
@@ -27,6 +37,10 @@ class _MedicationPageState extends State<MedicationPage> {
 
   late Future<List<Medication>> _medicationListFuture;
   int? _selectedMedicationId;
+
+  bool _isLoading = false; // dian line 84
+  final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>(); // dian line 85
 
   @override
   void initState() {
@@ -296,21 +310,44 @@ class _MedicationPageState extends State<MedicationPage> {
           ),
         ),
         const SizedBox(height: 16.0),
-        ElevatedButton(
-          onPressed: () {
-            // Add logic to save the edited medication reminder
-            // ...
+        // ElevatedButton(
+        //   onPressed: () async {
+        //     MedReminderBloc medreminderBloc =
+        //         MedReminderBloc(); // dian line 380
+        //     MedReminderResponseModel medReminderResponseModel =
+        //         await medreminderBloc
+        //             .createMedReminder(MedReminderRequestModel);
 
-            // Optionally, you can navigate back to the previous screen
-            Navigator.of(context).pop();
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.green, // background color
-            onPrimary: Colors.white, // text color
-          ),
-          child: const Text('Save Medication'),
-        ),
-        const SizedBox(height: 16.0),
+        //     if (medReminderResponseModel.isSuccess) {
+        //       if (mounted) {
+        //         navigateTo(
+        //             context,
+        //             MedReminderPage(
+        //               user: medReminderResponseModel.data!,
+        //             ));
+        //       }
+
+        //       print(medReminderResponseModel);
+        //     } else {
+        //       print(medReminderResponseModel.message);
+        //     }
+        //   },
+        //   style: ElevatedButton.styleFrom(
+        //     minimumSize: const Size(300, 60),
+        //     primary: Theme.of(context).highlightColor,
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(30.0),
+        //     ),
+        //     elevation: 8,
+        //   ),
+        //   child: const Text(
+        //     'Save Medication Reminder',
+        //     style: TextStyle(
+        //       fontSize: 20,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

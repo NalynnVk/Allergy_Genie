@@ -5,6 +5,7 @@ import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/models/insight/insight_model.dart';
 import 'package:allergygenieapi/models/insight/list_insight_response_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/pages/insight_description_page.dart';
 import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
 import 'package:allergygenieapi/public_components/theme_spinner.dart';
@@ -91,7 +92,7 @@ class _InsightPageState extends State<InsightPage> {
         body: SmartRefresher(
           controller: _refreshController,
           header: const WaterDropMaterialHeader(
-            backgroundColor: kPrimaryColor,
+            backgroundColor: Colors.grey,
           ),
           onRefresh: _onRefresh,
           child: CustomScrollView(
@@ -132,40 +133,61 @@ class _InsightPageState extends State<InsightPage> {
     required user,
     required insight,
   }) =>
-      Container(
-        margin: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              spreadRadius: 2,
-              blurRadius: 2,
-              offset: Offset(2, 2),
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  InsightDescriptionPage(user: user, insight: insight),
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${insight.title}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios_rounded),
-                ],
+          );
+        },
+        child: Container(
+          margin: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.amber,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(2, 2),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${insight.title}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const Icon(Icons.arrow_forward_ios_rounded),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
+}
+
+class ThemeSpinner {
+  static Widget spinner() {
+    return const Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+      ),
+    );
+  }
 }

@@ -6,9 +6,17 @@ import 'package:allergygenieapi/resource/tracking_resource.dart';
 import 'package:allergygenieapi/services/web_services.dart';
 
 class TrackingBloc {
-  // add tracking?
-  // Future<TrackingResponseModel> createTracking(TrackingRequestModel newTracking) async {
-  //   return await Webservice.post(TrackingResource.createTracking(), body: newTracking.toJson());
+  // // add tracking?
+  // Future<TrackingResponseModel> createTracking(
+  //     TrackingRequestModel newTracking) async {
+  //   return await Webservice.post(TrackingResource.createTracking(),
+  //       body: newTracking.toJson());
+  // }
+
+  // Future<TrackingResponseModel> createTracking(
+  //     TrackingRequestModel requestModel, int trackingId) async {
+  //   return await Webservice.post(
+  //       TrackingResource.createTracking(trackingId, requestModel));
   // }
 
   // list tracking

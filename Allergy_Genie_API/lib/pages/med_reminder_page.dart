@@ -10,7 +10,7 @@ import 'package:allergygenieapi/models/med_reminder/med_reminder_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
-import 'package:allergygenieapi/public_components/theme_spinner.dart';
+// import 'package:allergygenieapi/public_components/theme_spinner.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -94,7 +94,7 @@ class _MedReminderPageState extends State<MedReminderPage> {
         body: SmartRefresher(
           controller: _refreshController,
           header: const WaterDropMaterialHeader(
-            backgroundColor: kPrimaryColor,
+            backgroundColor: Colors.grey,
           ),
           onRefresh: _onRefresh,
           child: CustomScrollView(
@@ -423,5 +423,16 @@ class _MedReminderPageState extends State<MedReminderPage> {
     );
   }
 }
+
+class ThemeSpinner {
+  static Widget spinner() {
+    return const Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+      ),
+    );
+  }
+}
+
 
 // https://chat.openai.com/c/ccba5442-8e2c-4a69-bf25-02efe7c73790
