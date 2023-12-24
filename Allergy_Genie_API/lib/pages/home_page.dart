@@ -1,16 +1,13 @@
 import 'package:allergygenieapi/bloc/tracking_bloc.dart';
 import 'package:allergygenieapi/bloc/user_bloc.dart';
-import 'package:allergygenieapi/constant.dart';
-import 'package:allergygenieapi/helpers/general_method.dart';
 import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/models/tracking/list_tracking_response_model.dart';
 import 'package:allergygenieapi/models/tracking/tracking_model.dart';
 import 'package:allergygenieapi/models/tracking/tracking_request_model.dart';
-import 'package:allergygenieapi/models/tracking/tracking_response_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/pages/add_tracking_page.dart';
 import 'package:allergygenieapi/pages/widgets/base_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
-import 'package:allergygenieapi/public_components/theme_spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -90,6 +87,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = widget.user;
     return Scaffold(
       body: BasePage(
         user: widget.user,
@@ -138,11 +136,11 @@ class _HomePageState extends State<HomePage> {
             right: 10.0,
             child: FloatingActionButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AddTrackingDialog();
-                  },
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddTrackingPage(user: user),
+                  ),
                 );
               },
               child: Icon(Icons.add),
@@ -238,88 +236,88 @@ class _HomePageState extends State<HomePage> {
       );
 }
 
-class AddTrackingDialog extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _AddTrackingDialogState();
-  }
-}
+// class AddTrackingDialog extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() {
+//     return _AddTrackingDialogState();
+//   }
+// }
 
-class _AddTrackingDialogState extends State<AddTrackingDialog> {
-  TextEditingController symptomCategoryController = TextEditingController();
-  TextEditingController allergenTypeController = TextEditingController();
-  TextEditingController severityController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+// class _AddTrackingDialogState extends State<AddTrackingDialog> {
+//   TextEditingController symptomCategoryController = TextEditingController();
+//   TextEditingController allergenTypeController = TextEditingController();
+//   TextEditingController severityController = TextEditingController();
+//   TextEditingController descriptionController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Add Tracking'),
-      content: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextField(
-              controller: symptomCategoryController,
-              decoration: const InputDecoration(labelText: 'Symptom Category'),
-            ),
-            TextField(
-              controller: allergenTypeController,
-              decoration: const InputDecoration(labelText: 'Allergen Type'),
-            ),
-            TextField(
-              controller: severityController,
-              decoration: const InputDecoration(labelText: 'Symptom Severity'),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('Cancel'),
-        ),
-        // TextButton(
-        //   onPressed: () async {
-        //     String symptomCategory = symptomCategoryController.text;
-        //     String allergenType = allergenTypeController.text;
-        //     String severity = severityController.text;
-        //     String description = descriptionController.text;
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       title: Text('Add Tracking'),
+//       content: SingleChildScrollView(
+//         child: Column(
+//           children: [
+//             TextField(
+//               controller: symptomCategoryController,
+//               decoration: const InputDecoration(labelText: 'Symptom Category'),
+//             ),
+//             TextField(
+//               controller: allergenTypeController,
+//               decoration: const InputDecoration(labelText: 'Allergen Type'),
+//             ),
+//             TextField(
+//               controller: severityController,
+//               decoration: const InputDecoration(labelText: 'Symptom Severity'),
+//             ),
+//             TextField(
+//               controller: descriptionController,
+//               decoration: const InputDecoration(labelText: 'Description'),
+//             ),
+//           ],
+//         ),
+//       ),
+//       actions: [
+//         TextButton(
+//           onPressed: () {
+//             Navigator.of(context).pop();
+//           },
+//           child: Text('Cancel'),
+//         ),
+//         // TextButton(
+//         //   onPressed: () async {
+//         //     String symptomCategory = symptomCategoryController.text;
+//         //     String allergenType = allergenTypeController.text;
+//         //     String severity = severityController.text;
+//         //     String description = descriptionController.text;
 
-        //     // Add your logic to save the data
-        //     // ...
+//         //     // Add your logic to save the data
+//         //     // ...
 
-        //     Navigator.of(context).pop();
+//         //     Navigator.of(context).pop();
 
-        //     TrackingBloc trackingBloc = TrackingBloc(); // dian line 380
-        //     TrackingResponseModel trackingResponseModel =
-        //         await trackingBloc.createTracking(TrackingRequestModel());
+//         //     TrackingBloc trackingBloc = TrackingBloc(); // dian line 380
+//         //     TrackingResponseModel trackingResponseModel =
+//         //         await trackingBloc.createTracking(TrackingRequestModel());
 
-        //     if (trackingResponseModel.isSuccess) {
-        //       if (mounted) {
-        //         navigateTo(
-        //             context,
-        //             HomePage(
-        //               tracking: trackingResponseModel.data!,
-        //             ));
-        //       }
+//         //     if (trackingResponseModel.isSuccess) {
+//         //       if (mounted) {
+//         //         navigateTo(
+//         //             context,
+//         //             HomePage(
+//         //               tracking: trackingResponseModel.data!,
+//         //             ));
+//         //       }
 
-        //       print(trackingResponseModel);
-        //     } else {
-        //       print(trackingResponseModel.message);
-        //     }
-        //   },
-        //   child: Text('Save'),
-        // ),
-      ],
-    );
-  }
-}
+//         //       print(trackingResponseModel);
+//         //     } else {
+//         //       print(trackingResponseModel.message);
+//         //     }
+//         //   },
+//         //   child: Text('Save'),
+//         // ),
+//       ],
+//     );
+//   }
+// }
 
 class ThemeSpinner {
   static Widget spinner() {

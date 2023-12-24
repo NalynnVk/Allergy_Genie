@@ -1,4 +1,5 @@
 import 'package:allergygenieapi/log_in.dart';
+import 'package:allergygenieapi/models/allergen/allergen_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:allergygenieapi/pages/care_plan_page.dart';
 // import 'package:allergygenieapi/pages/emergency_contact_page.dart';
@@ -16,8 +17,13 @@ import 'package:url_launcher/url_launcher.dart';
 class BasePage extends StatefulWidget {
   final User user;
   final Widget body;
-  const BasePage({Key? key, required this.user, required this.body})
-      : super(key: key);
+  // final Allergen allergen;
+  // required this.allergen
+  const BasePage({
+    Key? key,
+    required this.user,
+    required this.body,
+  }) : super(key: key);
 
   @override
   State<BasePage> createState() => _BasePageState();

@@ -6,14 +6,10 @@ import 'package:allergygenieapi/models/tracking/tracking_response_model.dart';
 import 'package:allergygenieapi/services/resource.dart';
 
 class TrackingResource {
-  // add tracking kena? postman ada list, show, add, edit
-  // perlu request model?
-
-  // add tracking
-  static Resource createTracking(TrackingRequestModel trackingRequestModel) {
+  static Resource createTracking(TrackingRequestModel requestModel) {
     return Resource(
         url: 'tracking',
-        data: trackingRequestModel.toJson(),
+        data: requestModel.toJson(),
         parse: (response) {
           return TrackingResponseModel(json.decode(response.body));
         });
@@ -36,4 +32,13 @@ class TrackingResource {
           return TrackingResponseModel(json.decode(response.body));
         });
   }
+
+  //store tracking
+  // static Resource storeTracking(TrackingRequestModel requestModel) {
+  //   return Resource(
+  //       url: 'tracking/',
+  //       parse: (response) {
+  //         return TrackingResponseModel(json.decode(response.body));
+  //       });
+  // }
 }

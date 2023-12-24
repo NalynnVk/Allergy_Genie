@@ -4,7 +4,7 @@ class User {
   String? date_of_birth;
   String? phone_number;
   String? profile_photo_path;
-  String? registration_status;
+  int? registration_status;
   // int? registration_status_id;
   String? access_token;
 

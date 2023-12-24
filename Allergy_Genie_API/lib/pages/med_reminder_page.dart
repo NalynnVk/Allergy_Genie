@@ -1,5 +1,5 @@
 import 'package:allergygenieapi/helpers/general_method.dart';
-import 'package:allergygenieapi/pages/medication_page.dart';
+import 'package:allergygenieapi/pages/add_reminder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:allergygenieapi/bloc/med_reminder_bloc.dart';
 import 'package:allergygenieapi/bloc/user_bloc.dart';
@@ -16,6 +16,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MedReminderPage extends StatefulWidget {
   final User user;
+
   const MedReminderPage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -132,7 +133,12 @@ class _MedReminderPageState extends State<MedReminderPage> {
         child: FloatingActionButton(
           onPressed: () {
             // _showAddDialog(context);
-            navigateTo(context, MedicationPage(user: widget.user));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddReminderPage(user: widget.user),
+              ),
+            );
           },
           child: const Icon(Icons.add),
         ),
@@ -150,7 +156,7 @@ class _MedReminderPageState extends State<MedReminderPage> {
         //   _buildEditMedicationForm(context, medreminder);
         // },
         onTap: () {
-          navigateTo(context, MedicationPage(user: widget.user));
+          navigateTo(context, AddReminderPage(user: widget.user));
         },
         child: Container(
           margin: const EdgeInsets.all(15),
@@ -232,196 +238,6 @@ class _MedReminderPageState extends State<MedReminderPage> {
           ),
         ),
       );
-
-  Future<void> _showAddDialog(BuildContext context) async {
-    TimeOfDay selectedTime = TimeOfDay.now(); // Initialize selectedTime here
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          title: const Center(child: Text('Add Meds Reminder')),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    title: const Text(
-                      'Time:',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    trailing: TextButton(
-                      onPressed: () async {
-                        final selectedNewTime = await showTimePicker(
-                          context: context,
-                          initialTime: selectedTime,
-                        );
-                        if (selectedNewTime != null) {
-                          setState(() {
-                            selectedTime = selectedNewTime;
-                          });
-                        }
-                      },
-                      child: Text(
-                        selectedTime.format(context),
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      // controller: nameController,
-                      decoration: InputDecoration(labelText: 'Medication Name'),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      // controller: dosageController,
-                      decoration: InputDecoration(labelText: 'Dosage'),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Add logic to save the new medication reminder
-                // ...
-
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showEditDialog(
-      BuildContext context, MedReminder medreminder) async {
-    TimeOfDay selectedTime = TimeOfDay.fromDateTime(
-      DateTime.parse('2023-12-09 ${medreminder.time_reminder}'),
-    );
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          title: const Center(child: Text('Edit Meds Reminder')),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    title: const Text(
-                      'Time:',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    trailing: TextButton(
-                      onPressed: () async {
-                        final selectedNewTime = await showTimePicker(
-                          context: context,
-                          initialTime: selectedTime,
-                        );
-                        if (selectedNewTime != null) {
-                          setState(() {
-                            selectedTime = selectedNewTime;
-                          });
-                        }
-                      },
-                      child: Text(
-                        selectedTime.format(context),
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          // Set the initial value for editing
-                          controller: TextEditingController(
-                              text: medreminder.medication?.name),
-                          decoration: const InputDecoration(
-                            labelText: 'Medication Name',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          // Set the initial value for editing
-                          controller: TextEditingController(
-                            text: medreminder.dosage,
-                          ),
-                          decoration: const InputDecoration(
-                            labelText: 'Medication Dosage',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Add logic to save the edited medication reminder
-                // ...
-
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
 
 class ThemeSpinner {

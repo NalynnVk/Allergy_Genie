@@ -16,6 +16,10 @@ class MedReminderBloc {
   //   return await Webservice.post(
   //       MedReminderResource.createMedReminder(medreminderId, requestModel));
   // }
+  Future<MedReminderResponseModel> createMedReminder(
+       MedReminderRequestModel requestModel) async {
+    return await Webservice.post(MedReminderResource.createMedReminder(requestModel));
+  }
 
   // list medReminder
   Future<ListMedReminderResponseModel> getListMedReminder() async {

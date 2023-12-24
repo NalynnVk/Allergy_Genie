@@ -1,23 +1,23 @@
+import 'package:flutter/material.dart';
+
 class MedReminderRequestModel {
   // String? patient_id;
-  String? medication_id;
+  int? medication_id;
   String? dosage;
-  String? time_reminder;
-  String? repititon;
+  TimeOfDay? time_reminder;
 
   MedReminderRequestModel({
     this.medication_id,
     this.dosage,
     this.time_reminder,
-    this.repititon,
   });
 
   factory MedReminderRequestModel.fromJson(Map<String, dynamic> json) {
     return MedReminderRequestModel(
       medication_id: json['medication_id'],
       dosage: json['dosage'],
-      time_reminder: json['time_reminder'],
-      repititon: json['repititon'],
+      time_reminder:
+          TimeOfDay.fromDateTime(DateTime.parse(json['time_reminder'])),
     );
   }
 
@@ -26,8 +26,10 @@ class MedReminderRequestModel {
     // data['patient_id'] = this.patient_id;
     data['medication_id'] = this.medication_id;
     data['dosage'] = this.dosage;
-    data['time_reminder'] = this.time_reminder;
-    data['repititon'] = this.repititon;
+    if (this.time_reminder != null) {
+      data['time_reminder'] =
+          "${this.time_reminder!.hour}:${this.time_reminder!.minute}";
+    }
     return data;
   }
 }

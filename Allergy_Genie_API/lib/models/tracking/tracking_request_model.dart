@@ -1,7 +1,7 @@
 class TrackingRequestModel {
   // String? patient_id;
-  String? symptom_id;
-  String? allergen_id;
+  int? symptom_id;
+  int? allergen_id;
 
   TrackingRequestModel({this.allergen_id, this.symptom_id});
 

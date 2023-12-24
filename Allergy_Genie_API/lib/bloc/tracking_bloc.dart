@@ -7,6 +7,11 @@ import 'package:allergygenieapi/services/web_services.dart';
 
 class TrackingBloc {
   // // add tracking?
+  Future<TrackingResponseModel> createTracking(
+      TrackingRequestModel requestModel) async {
+    return await Webservice.post(TrackingResource.createTracking(requestModel));
+  }
+
   // Future<TrackingResponseModel> createTracking(
   //     TrackingRequestModel newTracking) async {
   //   return await Webservice.post(TrackingResource.createTracking(),
@@ -28,4 +33,11 @@ class TrackingBloc {
   Future<TrackingResponseModel> updateTracking(int trackingId) async {
     return await Webservice.put(TrackingResource.updatetracking(trackingId));
   }
+
+  //Storetracking
+  //   Future<TrackingResponseModel> storeTracking(TrackingRequestModel requestModel) async {
+  //   return await Webservice.put(TrackingResource.storeTracking(requestModel));
+  // }
+
+  
 }

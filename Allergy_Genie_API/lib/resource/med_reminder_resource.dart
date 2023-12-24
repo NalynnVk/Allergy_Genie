@@ -10,12 +10,11 @@ class MedReminderResource {
   // perlu request model?
 
   // add medreminder
-  static Resource createMedReminder(
-      MedReminderRequestModel MedReminderRequestModel) {
+  static Resource createMedReminder(MedReminderRequestModel requestModel) {
     return Resource(
         // ikut url POSTMAN
         url: 'medicationreminder',
-        data: MedReminderRequestModel.toJson(),
+        data: requestModel.toJson(),
         parse: (response) {
           return MedReminderResponseModel(json.decode(response.body));
         });

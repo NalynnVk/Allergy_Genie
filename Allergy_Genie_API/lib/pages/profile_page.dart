@@ -1,10 +1,13 @@
 // import 'package:allergygenieapi/models/tracking/tracking_model.dart';
+import 'package:allergygenieapi/models/allergen/allergen_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/pages/add_allergen_page.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
   // final Tracking tracking;
   final User user;
+  // final Allergen allergen;
   const ProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -27,6 +30,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: EditProfilePage(
         user: widget.user,
+        // allergen: widget.allergen,
+        // allergen: widget.allergen,
         // tracking: widget.tracking,
       ),
     );
@@ -35,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 class EditProfilePage extends StatelessWidget {
   final User user;
+  // final Allergen allergen;
   // final Tracking tracking;
 
   const EditProfilePage({Key? key, required this.user}) : super(key: key);
@@ -99,6 +105,13 @@ class EditProfilePage extends StatelessWidget {
                           Icons.phone,
                           Colors.black,
                         ),
+                        // const SizedBox(height: 15.0),
+                        // _buildInputField(
+                        //   user.allergen!.name,
+                        //   'Allergen',
+                        //   Icons.no_food_outlined,
+                        //   Colors.black,
+                        // ),
                         // Text(
                         //   'Allergen Type: ${user.allergen!.name}',
                         //   style: const TextStyle(
@@ -133,7 +146,15 @@ class EditProfilePage extends StatelessWidget {
                         // ),
                         const SizedBox(height: 20.0),
                         ElevatedButton(
-                          onPressed: _saveProfile,
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AddAllergenPage(user: user),
+                              ),
+                            );
+                          },
                           child: const Text(
                             'Add Allergen',
                             style: TextStyle(
