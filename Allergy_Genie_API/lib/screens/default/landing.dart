@@ -1,3 +1,4 @@
+import 'package:allergygenieapi/constant.dart';
 import 'package:allergygenieapi/screens/basic/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,7 @@ class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Landing Screen'),
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -19,16 +18,27 @@ class LandingScreen extends StatelessWidget {
                 'images/AllergyGenieLogo.png',
               ),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the login screen when the button is clicked
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-              child: Text('Next'),
+            Container(
+              padding: EdgeInsets.only(bottom: 160.0),
+              width: 200.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to the login screen when the button is clicked
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: kPrimaryColor,
+                ),
+                child: Text(
+                  'Next',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

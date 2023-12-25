@@ -1,28 +1,36 @@
+import 'package:flutter/material.dart';
 import 'package:allergygenieapi/bloc/med_reminder_bloc.dart';
 import 'package:allergygenieapi/bloc/medication_bloc.dart';
 import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/models/med_reminder/med_reminder_model.dart';
 import 'package:allergygenieapi/models/med_reminder/med_reminder_request_model.dart';
 import 'package:allergygenieapi/models/med_reminder/med_reminder_response_model.dart';
+import 'package:allergygenieapi/models/med_reminder/med_reminder_update_request_model.dart';
 import 'package:allergygenieapi/models/medication/list_medication_response_model.dart';
 import 'package:allergygenieapi/models/medication/medication_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:allergygenieapi/screens/default/navigation.dart';
 import 'package:allergygenieapi/screens/medicationReminder/list_reminder_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class StoreReminderScreen extends StatefulWidget {
+class UpdateReminderScreen extends StatefulWidget {
   final User user;
-  const StoreReminderScreen({super.key, required this.user});
+  final MedReminder medReminder;
+  const UpdateReminderScreen({
+    Key? key,
+    required this.user,
+    required this.medReminder,
+  }) : super(key: key);
 
   @override
-  State<StoreReminderScreen> createState() => _StoreReminderScreenState();
+  State<UpdateReminderScreen> createState() => _UpdateReminderScreenState();
 }
 
-class _StoreReminderScreenState extends State<StoreReminderScreen> {
-  MedReminderRequestModel medReminderRequestModel = MedReminderRequestModel();
+class _UpdateReminderScreenState extends State<UpdateReminderScreen> {
+  UpdateMedReminderRequestModel medReminderRequestModel =
+      UpdateMedReminderRequestModel();
   MedicationBloc medicationBloc = MedicationBloc();
 
   static const _pageSize = 10;
@@ -43,6 +51,22 @@ class _StoreReminderScreenState extends State<StoreReminderScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Initialize values for dropdowns
+    _selectedMedicationId = widget.medReminder.medication!.id;
+    _selectedDosage = widget.medReminder.dosageId;
+    _selectedRepitition = widget.medReminder.repititonId;
+    List<String> timeParts = widget.medReminder.time_reminder!.split(':');
+    _selectedTime = TimeOfDay(
+        hour: int.parse(timeParts[0]), minute: int.parse(timeParts[1]));
+
+    // Set initial values in the request model
+    medReminderRequestModel.medication_id = _selectedMedicationId;
+    medReminderRequestModel.dosage = _selectedDosage;
+    medReminderRequestModel.repititon = _selectedRepitition;
+    medReminderRequestModel.time_reminder = _selectedTime;
+
+    // Initialize medication list future and paging controller
     _medicationListFuture = _fetchMedicationList();
 
     _medicationPagingController.addPageRequestListener((pageKey) {
@@ -214,7 +238,7 @@ class _StoreReminderScreenState extends State<StoreReminderScreen> {
               onTap: () async {
                 final selectedTime = await showTimePicker(
                   context: context,
-                  initialTime: TimeOfDay.now(),
+                  initialTime: _selectedTime ?? TimeOfDay.now(),
                 );
                 if (selectedTime != null) {
                   setState(() {
@@ -235,8 +259,8 @@ class _StoreReminderScreenState extends State<StoreReminderScreen> {
             onPressed: () async {
               MedReminderBloc medReminderBloc = MedReminderBloc();
               MedReminderResponseModel medReminderResponseModel =
-                  await medReminderBloc
-                      .createMedReminder(medReminderRequestModel);
+                  await medReminderBloc.updateMedReminder(
+                      medReminderRequestModel, widget.medReminder.id!);
 
               if (medReminderResponseModel.isSuccess) {
                 if (mounted) {
@@ -253,7 +277,7 @@ class _StoreReminderScreenState extends State<StoreReminderScreen> {
                 print(medReminderResponseModel.message);
               }
             },
-            child: Text('Add'),
+            child: Text('Update'),
           ),
         ],
       ),

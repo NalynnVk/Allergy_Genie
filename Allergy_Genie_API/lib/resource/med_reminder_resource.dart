@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:allergygenieapi/models/med_reminder/list_med_reminder_response_model.dart';
 import 'package:allergygenieapi/models/med_reminder/med_reminder_request_model.dart';
 import 'package:allergygenieapi/models/med_reminder/med_reminder_response_model.dart';
+import 'package:allergygenieapi/models/med_reminder/med_reminder_update_request_model.dart';
 import 'package:allergygenieapi/services/resource.dart';
 
 class MedReminderResource {
@@ -30,9 +31,18 @@ class MedReminderResource {
   }
 
   // update medreminder
-  static Resource updatemedreminder(int medreminderId) {
+  static Resource updatemedreminder(UpdateMedReminderRequestModel requestModel ,int medreminderId) {
     return Resource(
-        url: 'medicationreminder/$medreminderId/update',
+        url: 'medicationreminder/$medreminderId',
+        data: requestModel,
+        parse: (response) {
+          return MedReminderResponseModel(json.decode(response.body));
+        });
+  }
+
+  static Resource delete(int medreminderId) {
+    return Resource(
+        url: 'medicationreminder/$medreminderId',
         parse: (response) {
           return MedReminderResponseModel(json.decode(response.body));
         });

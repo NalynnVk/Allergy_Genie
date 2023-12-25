@@ -214,13 +214,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text(
-                  'Severity Level: ${tracking.symptom!.severity}',
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    fontSize: 15,
-                  ),
-                ),
+                // Text(
+                //   // 'Severity Level: ${tracking.symptom!.severity}',
+                //   style: const TextStyle(
+                //     color: Colors.blue,
+                //     fontSize: 15,
+                //   ),
+                // ),
                 const SizedBox(height: 5),
                 Text(
                   'Description: ${tracking.symptom!.description}',

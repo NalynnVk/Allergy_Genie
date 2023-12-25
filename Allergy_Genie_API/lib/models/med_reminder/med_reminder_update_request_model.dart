@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MedReminderRequestModel {
+class UpdateMedReminderRequestModel {
   int? patient_id;
   int? medication_id;
   int? dosage;
   int? repititon;
   TimeOfDay? time_reminder;
 
-  MedReminderRequestModel({
+  UpdateMedReminderRequestModel({
     this.patient_id,
     this.medication_id,
     this.dosage,
@@ -15,8 +15,8 @@ class MedReminderRequestModel {
     this.time_reminder,
   });
 
-  factory MedReminderRequestModel.fromJson(Map<String, dynamic> json) {
-    return MedReminderRequestModel(
+  factory UpdateMedReminderRequestModel.fromJson(Map<String, dynamic> json) {
+    return UpdateMedReminderRequestModel(
       patient_id: json['patient_id'],
       medication_id: json['medication_id'],
       dosage: json['dosage'],

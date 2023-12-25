@@ -1,7 +1,9 @@
 import 'package:allergygenieapi/helpers/http_response.dart';
 import 'package:allergygenieapi/helpers/secure_storage_api.dart';
 import 'package:allergygenieapi/models/user/login_request_model.dart';
+import 'package:allergygenieapi/models/user/user_request_model.dart';
 import 'package:allergygenieapi/models/user/user_response_model.dart';
+import 'package:allergygenieapi/models/user/user_update_request_model.dart';
 import 'package:allergygenieapi/resource/user_resource.dart';
 import 'package:allergygenieapi/services/web_services.dart';
 
@@ -23,6 +25,14 @@ class UserBloc {
       }
     }
     return response;
+  }
+
+  Future<UserResponseModel> register(UserRequestModel userRequestModel) async {
+    return await Webservice.post(UserResource.register(userRequestModel));
+  }
+
+  Future<UserResponseModel> update(UpdateUserRequestModel requestModel ,int userId) async {
+    return await Webservice.put(UserResource.update(requestModel, userId));
   }
 
   // Future<UserResponseModel> getProfile(int id) async {

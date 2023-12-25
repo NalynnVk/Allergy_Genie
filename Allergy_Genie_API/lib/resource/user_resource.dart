@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:allergygenieapi/models/user/login_request_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/models/user/user_request_model.dart';
 import 'package:allergygenieapi/models/user/user_response_model.dart';
+import 'package:allergygenieapi/models/user/user_update_request_model.dart';
 import 'package:allergygenieapi/services/resource.dart';
 import 'package:get_it/get_it.dart';
 
@@ -25,5 +27,23 @@ class UserResource {
       GetIt.instance.unregister<User>();
       GetIt.instance.registerSingleton<User>(user);
     }
+  }
+
+  static Resource register(UserRequestModel userRequestModel) {
+    return Resource(
+        url: 'register',
+        data: userRequestModel.toJson(),
+        parse: (response) {
+          return UserResponseModel(json.decode(response.body));
+        });
+  }
+
+   static Resource update(UpdateUserRequestModel requestModel, int userId) {
+    return Resource(
+        url: 'user/$userId',
+        data: requestModel,
+        parse: (response) {
+          return UserResponseModel(json.decode(response.body));
+        });
   }
 }
