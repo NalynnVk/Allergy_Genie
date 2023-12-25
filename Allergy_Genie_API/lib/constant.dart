@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const rootUrl = "https://allergygenie.tech/api/v1/";
 
-const kPrimaryColor = Color(0xff246F69);
+const kPrimaryColor = Color.fromRGBO(91, 137, 255, 1);
 const kPrimary100Color = Color.fromRGBO(202, 240, 248, 1);
 const kSecondaryColor = Color.fromRGBO(0, 119, 182, 1);
 const kLightBlue = Color.fromRGBO(244, 247, 255, 1);
@@ -15,7 +15,7 @@ const kBlack = Colors.black;
 const kBgColor = Color.fromARGB(255, 252, 252, 252);
 const kTransparent = Colors.transparent;
 const kPrimaryLight = Color.fromRGBO(0, 119, 182, 1);
-const kDanger = Color.fromARGB(255, 209, 0, 10);
+const kDanger = Color.fromARGB(255, 200, 47, 55);
 const kDisabledBg = Color.fromARGB(255, 224, 224, 224);
 const kPrimaryLightColor = Color.fromRGBO(241, 244, 250, 1.0);
 const kTextGray = Color.fromRGBO(0, 0, 0, 0.40);
@@ -53,19 +53,3 @@ class DialogType {
   static const int warning = 3;
   static const int success = 4;
 }
-
-// class ClassTodayType {
-//   static const int physical = 1;
-//   static const int online = 2;
-// }
-
-class Status {
-  static const int inHall = 1;
-  static const int out = 2;
-}
-
-// class ExemptionStatus {
-//   static const String needed = "Exemption needed";
-//   static const String submitted = "Exemption submitted";
-//   static const String error = "Error";
-// }

@@ -1,4 +1,5 @@
 import 'package:allergygenieapi/log_in.dart';
+import 'package:allergygenieapi/screens/default/landing.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         highlightColor: const Color.fromARGB(255, 46, 0, 125),
         fontFamily: 'Roboto',
       ),
-      home: const LoginPage(),
+      home: const LandingScreen(),
     );
   }
 }
