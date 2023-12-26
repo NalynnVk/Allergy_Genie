@@ -1,5 +1,8 @@
+import 'package:allergygenieapi/bloc/user_bloc.dart';
 import 'package:allergygenieapi/constant.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
+import 'package:allergygenieapi/pages/home_page.dart';
+import 'package:allergygenieapi/public_components/custom_dialog.dart';
 import 'package:allergygenieapi/screens/basic/homepage_screen.dart';
 import 'package:allergygenieapi/screens/insight/list_insight_screen.dart';
 import 'package:allergygenieapi/screens/medicationReminder/list_reminder_screen.dart';
@@ -116,13 +119,15 @@ class _AppDrawerState extends State<AppDrawer> {
               'Logout',
               style: TextStyle(color: kDanger),
             ),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(user: widget.user),
-                ),
-              );
+            onTap: () async {
+              // Navigator.pop(context);
+              print("logout");
+              UserBloc userBloc = UserBloc();
+              CustomDialog.show(context,
+                  dismissOnTouchOutside: false,
+                  description: "Logging you out...",
+                  center: ThemeSpinner.spinner());
+              await userBloc.signOut(context);
             },
           ),
           ListTile(
@@ -132,6 +137,21 @@ class _AppDrawerState extends State<AppDrawer> {
             leading: const Icon(Iconsax.alarm5),
             title: const Text(
               "Emergency Contact",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black, // Text color
+                fontSize: 18, // Text size
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+                
+            },
+            leading: const Icon(Iconsax.alarm5),
+            title: const Text(
+              "Care Plan",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black, // Text color

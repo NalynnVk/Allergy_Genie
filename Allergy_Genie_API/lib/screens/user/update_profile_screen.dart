@@ -83,22 +83,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    UserBloc userBloc = UserBloc();
-                    UserResponseModel userResponseModel = await userBloc.update(
-                        userRequestModel, widget.user.id!);
+                  UserBloc userBloc = UserBloc();
+                  UserResponseModel userResponseModel =
+                      await userBloc.update(userRequestModel, widget.user.id!);
 
-                    if (userResponseModel.isSuccess) {
-                      if (mounted) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfileScreen(user: widget.user)),
-                        );
-                      }
-                    } else {
-                      print(userResponseModel.message);
+                  if (userResponseModel.isSuccess) {
+                    if (mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProfileScreen(user: widget.user)),
+                      );
                     }
+                  } else {
+                    print(userResponseModel.message);
                   }
                 },
                 child: Text('Save Changes'),

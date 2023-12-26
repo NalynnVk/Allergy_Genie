@@ -154,6 +154,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 child: Text('Register'),
               ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(200, 30),
+                  primary: Colors.black,
+                ),
+                child: const Text(
+                  "Already have an account? Sign In",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+              )
             ],
           ),
         ),

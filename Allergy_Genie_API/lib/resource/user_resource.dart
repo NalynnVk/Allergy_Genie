@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:allergygenieapi/models/default_response_model.dart';
 import 'package:allergygenieapi/models/user/login_request_model.dart';
 import 'package:allergygenieapi/models/user/user_model.dart';
 import 'package:allergygenieapi/models/user/user_request_model.dart';
@@ -46,4 +47,15 @@ class UserResource {
           return UserResponseModel(json.decode(response.body));
         });
   }
+
+  // Call Logout API to revoke the token
+  static Resource logout() {
+    return Resource(
+        url: 'logout',
+        parse: (response) {
+          return DefaultResponseModel(json.decode(response.body));
+        });
+  }
+
+  
 }
