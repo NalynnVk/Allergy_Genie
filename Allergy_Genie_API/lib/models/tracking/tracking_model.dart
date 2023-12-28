@@ -2,7 +2,7 @@ import 'package:allergygenieapi/models/allergen/allergen_model.dart';
 import 'package:allergygenieapi/models/symptom/symptom_model.dart';
 
 class Tracking {
-  // int? id;
+  int? id;
   Symptom? symptom;
   Allergen? allergen;
   int? severityId;
@@ -10,7 +10,7 @@ class Tracking {
   String? notes;
 
   Tracking({
-    // this.id,
+    this.id,
     this.symptom,
     this.allergen,
     this.severityId,
@@ -20,7 +20,7 @@ class Tracking {
 
   //based on exam_schedule_model.dart - dian
   Tracking.fromJson(Map<String, dynamic> json) {
-    // id = json['id'];
+    id = json['id'];
     severityId = json['severityId'];
     severity = json['severity'];
     notes = json['notes'];
@@ -33,7 +33,7 @@ class Tracking {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['id'] = this.id;
+    data['id'] = this.id;
     data['severityId'] = this.severityId;
     data['severity'] = this.severity;
     data['notes'] = this.notes;

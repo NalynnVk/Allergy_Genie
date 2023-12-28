@@ -1,3 +1,10 @@
+import 'package:allergygenieapi/screens/insight/list_insight_screen.dart';
+import 'package:allergygenieapi/screens/medicationReminder/list_reminder_screen.dart';
+import 'package:allergygenieapi/screens/medicationTracking/update_tracking_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'package:allergygenieapi/bloc/tracking_bloc.dart';
 import 'package:allergygenieapi/bloc/user_bloc.dart';
 import 'package:allergygenieapi/constant.dart';
@@ -9,22 +16,28 @@ import 'package:allergygenieapi/pages/home_page.dart';
 import 'package:allergygenieapi/public_components/empty_list.dart';
 import 'package:allergygenieapi/screens/default/navigation.dart';
 import 'package:allergygenieapi/screens/medicationTracking/store_tracking_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+// import 'package:table_calendar/table_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
-  const HomeScreen({super.key, required this.user});
+  const HomeScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+int _currentIndex = 0;
+
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<User?> _user;
+  // late Future<User?> _user;
   UserBloc userBloc = UserBloc();
   TrackingBloc trackingBloc = TrackingBloc();
+  // DateTime today = DateTime.now();
+  // void _onDaySelected(DateTime day, DateTime focusedDay) {
+  //   setState(() {
+  //     today = day;
+  //   });
+  // }
 
   static const _pageSize = 10;
   final PagingController<int, Tracking> _trackingPagingController =
@@ -36,14 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onRefresh() async {
     // monitor network fetch
-
     _trackingPagingController.refresh();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    //Call API
+    // Call API
     final ListTrackingResponseModel response =
         await trackingBloc.getListTracking();
 
@@ -53,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response.statusCode == HttpResponse.HTTP_OK) {
       List<Tracking> trackingModel = response.data!;
       print(trackingModel);
-      // Compare the lenght with the page size to know either already last page or not
+      // Compare the length with the page size to know either already last page or not
       final isLastPage = trackingModel.length < _pageSize;
       if (isLastPage) {
         _trackingPagingController.appendLastPage(trackingModel);
@@ -74,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _currentIndex = 0;
     _trackingPagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -84,7 +97,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          '     Greetings, ${widget.user.name}',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: kPrimaryColor,
+      ),
       drawer: AppDrawer(user: widget.user),
       body: SmartRefresher(
         controller: _refreshController,
@@ -97,22 +119,17 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Greetings ${widget.user.name}',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  // SliverToBoxAdapter(
+                  //   child: calendar(),
+                  // ),
+                  const SizedBox(height: 28.0),
                   ellipse(),
+                  const SizedBox(height: 18.0),
                 ],
               ),
             ),
             SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               sliver: PagedSliverList<int, Tracking>(
                 pagingController: _trackingPagingController,
                 builderDelegate: PagedChildBuilderDelegate<Tracking>(
@@ -140,40 +157,108 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          _navigateTo(index);
+        },
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.alarm_add),
+            label: 'Reminder',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.insights),
+            label: 'Insight',
+          ),
+        ],
+      ),
     );
   }
+
+  // Widget calendar() {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(15.0),
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           child: TableCalendar(
+  //             headerStyle: const HeaderStyle(
+  //               formatButtonVisible: false,
+  //               titleCentered: true,
+  //               titleTextStyle: TextStyle(fontSize: 24),
+  //             ),
+  //             selectedDayPredicate: (day) => isSameDay(day, today),
+  //             focusedDay: today,
+  //             firstDay: DateTime.utc(2000, 01, 01),
+  //             lastDay: DateTime.utc(2060, 01, 01),
+  //             onDaySelected: _onDaySelected,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget ellipse() {
     return Stack(
       children: [
         Center(
           child: ClipOval(
+            clipBehavior: Clip.antiAlias,
             child: Container(
-              width: 200,
-              height: 200,
-              color: Colors.blue, // Change the color as needed
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.black87,
+                  // color: kPrimaryColor,
+                  width: 5, // Increased thickness of the oval
+                ),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const SizedBox(height: 22.0),
+                  const Text(
                     'How do you feel today?',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 23.0,
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 15.0),
+                  const SizedBox(height: 10.0),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StoreTrackingScreen(user: widget.user),
+                          builder: (context) =>
+                              StoreTrackingScreen(user: widget.user),
                         ),
                       );
                     },
-                    child: Text('LOG SYMPTOM'),
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
+                    child: const Text(
+                      'Log Symptom',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -184,12 +269,59 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _navigateTo(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return HomeScreen(user: widget.user);
+            },
+          ),
+        );
+        break;
+      case 1:
+        // Update this block to navigate to the correct screen for Medication Info
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ListReminderScreen(user: widget.user);
+            },
+          ),
+        );
+        break;
+      case 2:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ListInsightScreen(user: widget.user);
+            },
+          ),
+        );
+        break;
+    }
+  }
+
   Widget trackingListItem({
     required BuildContext context,
     required Tracking tracking,
   }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UpdateTrackingScreen(
+              user: widget.user,
+              tracking: tracking,
+            ),
+          ),
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: Container(
@@ -198,10 +330,14 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.white,
-            border: Border.all(
-              color: Colors.blue,
-              width: 1,
-            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -209,7 +345,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +363,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -237,21 +371,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 10),
+                          // Text(
+                          //   'Note:',
+                          //   style: const TextStyle(
+                          //     color: Colors.black,
+                          //     fontSize: 15,
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 5),
+                          // // Wrap description in Expanded to avoid overflow
                           Text(
-                            'Description: ${tracking.notes ?? "null"}',
+                            '${tracking.notes ?? "null"}',
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5),
                     ],
                   ),
                 ],

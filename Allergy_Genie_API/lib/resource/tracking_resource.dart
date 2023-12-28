@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:allergygenieapi/models/tracking/tracking_request_model.dart';
 import 'package:allergygenieapi/models/tracking/list_tracking_response_model.dart';
 import 'package:allergygenieapi/models/tracking/tracking_response_model.dart';
+import 'package:allergygenieapi/models/tracking/tracking_update_request_model.dart';
 import 'package:allergygenieapi/services/resource.dart';
 
 class TrackingResource {
@@ -25,9 +26,11 @@ class TrackingResource {
   }
 
   // update tracking
-  static Resource updatetracking(int trackingId) {
+  static Resource updatetracking(
+      UpdateTrackingRequestModel requestModel, int trackingId) {
     return Resource(
-        url: 'tracking/$trackingId/update',
+        url: 'tracking/$trackingId',
+        data: requestModel,
         parse: (response) {
           return TrackingResponseModel(json.decode(response.body));
         });

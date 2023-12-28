@@ -31,7 +31,8 @@ class MedReminderResource {
   }
 
   // update medreminder
-  static Resource updatemedreminder(UpdateMedReminderRequestModel requestModel ,int medreminderId) {
+  static Resource updatemedreminder(
+      UpdateMedReminderRequestModel requestModel, int medreminderId) {
     return Resource(
         url: 'medicationreminder/$medreminderId',
         data: requestModel,
